@@ -90,10 +90,12 @@ export function LoanRequestDetailsDialog({ open, onOpenChange, requestId }: Loan
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[1300px] max-h-[90vh] overflow-hidden flex flex-col p-0">
-        <DialogTitle className="sr-only">Loan Request Details - {request.creditId}</DialogTitle>
-        <DialogDescription className="sr-only">
-          View complete details for loan request {request.creditId} including borrower information, documents, and reviews.
-        </DialogDescription>
+        <DialogHeader className="sr-only">
+          <DialogTitle>Loan Request Details - {request.creditId}</DialogTitle>
+          <DialogDescription>
+            View complete details for loan request {request.creditId} including borrower information, documents, and reviews.
+          </DialogDescription>
+        </DialogHeader>
 
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-6 border-b bg-gradient-to-r from-blue-50 to-cyan-50">

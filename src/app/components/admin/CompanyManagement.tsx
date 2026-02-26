@@ -1,13 +1,4 @@
-import { useState } from 'react';
-import { useData } from '../../contexts/DataContext';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '../ui/dialog';
 import { Plus, Building2, Mail, Calendar, ToggleLeft, ToggleRight, Wallet, Users, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'motion/react';
@@ -98,6 +89,9 @@ export function CompanyManagement() {
                 <Building2 className="w-5 h-5 text-purple-600" />
                 Create New Company
               </DialogTitle>
+              <DialogDescription className="text-sm text-slate-500">
+                Add a new company to the platform with the necessary details.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">

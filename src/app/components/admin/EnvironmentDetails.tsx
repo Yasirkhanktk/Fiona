@@ -1,3 +1,4 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '../ui/dialog';
 import { useState } from 'react';
 import { useData, Environment, DocumentType } from '../../contexts/DataContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -5,7 +6,6 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Switch } from '../ui/switch';
@@ -249,6 +249,9 @@ export function EnvironmentDetails({ environmentId, onBack }: EnvironmentDetails
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Add Document Type</DialogTitle>
+                  <DialogDescription>
+                    Add a new document type that is required for loan requests in this environment.
+                  </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                   <div className="space-y-2">

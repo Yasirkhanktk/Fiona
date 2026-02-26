@@ -7,7 +7,7 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '../ui/dialog';
 import { Plus, UserCircle, Building2, Mail, Shield, ToggleLeft, ToggleRight, Users as UsersIcon, Wallet, ShieldCheck } from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
 import { toast } from 'sonner';
@@ -136,6 +136,9 @@ export function UserManagement() {
                 <UserCircle className="w-5 h-5 text-purple-600" />
                 Create New User
               </DialogTitle>
+              <DialogDescription className="text-sm text-slate-500">
+                Add a new user to the platform with specific roles and permissions.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="grid grid-cols-2 gap-4">

@@ -1,3 +1,4 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '../ui/dialog';
 import { useState } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -6,7 +7,6 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
 import { Plus, Network, Building2, ToggleLeft, ToggleRight, Eye } from 'lucide-react';
@@ -179,6 +179,9 @@ export function EnvironmentConfiguration() {
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Environment</DialogTitle>
+              <DialogDescription>
+                Define the environment's parameters, including document requirements and approval logic.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">

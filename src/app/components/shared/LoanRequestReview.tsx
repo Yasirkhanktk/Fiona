@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { 
   FileText, 
@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'motion/react';
+import { AIDocumentAnalysis } from './AIDocumentAnalysis';
 
 export function LoanRequestReview() {
   const { user } = useAuth();
@@ -357,7 +358,10 @@ export function LoanRequestReview() {
 
       {/* Review Dialog */}
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0" aria-describedby="review-dialog-description">
+          <DialogDescription id="review-dialog-description" className="sr-only">
+            Review and validate loan request documents, provide feedback, and approve or reject the request
+          </DialogDescription>
           <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-4 border-b">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-2xl flex items-center gap-3">
@@ -440,6 +444,18 @@ export function LoanRequestReview() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* AI Document Analysis */}
+                <AIDocumentAnalysis 
+                  documents={selectedRequest.documents}
+                  onAnalysisComplete={(results) => {
+                    // Optional: auto-suggest reviews based on AI analysis
+                    console.log('AI Analysis completed:', results);
+                  }}
+                  onDocumentReview={handleDocumentReview}
+                  existingReviews={documentReviews}
+                  userRole={isSupervisor ? 'supervisor' : 'funder'}
+                />
 
                 {/* Documents */}
                 <div>

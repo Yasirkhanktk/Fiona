@@ -570,7 +570,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 235000,
         uploadedAt: '2024-02-22T07:30:00Z',
         fileUrl: '/mock/documents/sunrise_registration.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Registration certificate is valid and up-to-date. All company details match official records.',
+            reviewedAt: '2024-02-23T10:15:00Z',
+          },
+        ],
       },
       {
         id: 'doc10',
@@ -580,7 +589,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 1450000,
         uploadedAt: '2024-02-22T07:35:00Z',
         fileUrl: '/mock/documents/sunrise_financials.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Financial statements show strong revenue growth of 35% YoY. Profit margins are healthy at 18%. Balance sheet indicates solid asset base.',
+            reviewedAt: '2024-02-23T10:20:00Z',
+          },
+        ],
       },
       {
         id: 'doc11',
@@ -590,7 +608,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 190000,
         uploadedAt: '2024-02-22T07:40:00Z',
         fileUrl: '/mock/documents/sunrise_credit.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Excellent credit score of 785. No late payments in the past 24 months. Debt-to-income ratio is well within acceptable range.',
+            reviewedAt: '2024-02-23T10:25:00Z',
+          },
+        ],
       },
       {
         id: 'doc12',
@@ -600,7 +627,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 850000,
         uploadedAt: '2024-02-22T07:45:00Z',
         fileUrl: '/mock/documents/expansion_plan.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Comprehensive expansion plan with detailed market analysis, realistic financial projections, and clear ROI timeline. Risk mitigation strategies are well-thought-out.',
+            reviewedAt: '2024-02-23T10:28:00Z',
+          },
+        ],
       },
     ],
     reviews: [
@@ -753,7 +789,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 240000,
         uploadedAt: '2024-02-21T10:30:00Z',
         fileUrl: '/mock/documents/green_registration.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Business registration is current and in good standing. Company has been operating for 8 years with clean compliance record.',
+            reviewedAt: '2024-02-22T13:45:00Z',
+          },
+        ],
       },
       {
         id: 'doc21',
@@ -763,7 +808,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 1320000,
         uploadedAt: '2024-02-21T10:40:00Z',
         fileUrl: '/mock/documents/green_financials.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Strong financial performance with consistent profitability. Revenue has grown 120% over 3 years. Operating in high-demand renewable energy sector.',
+            reviewedAt: '2024-02-22T14:00:00Z',
+          },
+        ],
       },
       {
         id: 'doc22',
@@ -773,7 +827,16 @@ const initialLoanRequests: LoanRequest[] = [
         fileSize: 185000,
         uploadedAt: '2024-02-21T10:50:00Z',
         fileUrl: '/mock/documents/green_credit.pdf',
-        reviews: [],
+        reviews: [
+          {
+            reviewerId: 'u2',
+            reviewerName: 'Sarah Supervisor',
+            reviewerRole: 'supervisor',
+            status: 'approved',
+            comment: 'Credit score of 810 indicates excellent creditworthiness. Multiple secured loans successfully repaid in the past. No adverse credit events.',
+            reviewedAt: '2024-02-22T14:15:00Z',
+          },
+        ],
       },
     ],
     reviews: [
