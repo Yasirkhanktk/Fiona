@@ -60,6 +60,17 @@ export function LoanRequestReview() {
   });
 
   const reviewedRequests = relevantRequests.filter(lr => {
+    // For funders: Don't show requests that were rejected and sent back to supervisor
+    if (isFunder) {
+      const hasReviewed = lr.reviews.some(r => r.reviewerId === user?.id);
+      const isSentBackToSupervisor = lr.status === 'under_review_supervisor';
+      
+      // Only show if reviewed AND not sent back to supervisor
+      if (hasReviewed && isSentBackToSupervisor) {
+        return false;
+      }
+    }
+    
     return lr.reviews.some(r => r.reviewerId === user?.id) || 
            lr.status === 'approved' || 
            lr.status === 'rejected' ||
@@ -349,6 +360,15 @@ export function LoanRequestReview() {
                       <div className="text-xs text-slate-600">{request.reviews.length} reviews</div>
                     </div>
                   </div>
+                  <Button
+                    onClick={() => handleOpenReview(request.id)}
+                    variant="outline"
+                    size="sm"
+                    className="w-full mt-3"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </Button>
                 </CardContent>
               </Card>
             ))
@@ -358,10 +378,7 @@ export function LoanRequestReview() {
 
       {/* Review Dialog */}
       <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0" aria-describedby="review-dialog-description">
-          <DialogDescription id="review-dialog-description" className="sr-only">
-            Review and validate loan request documents, provide feedback, and approve or reject the request
-          </DialogDescription>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0">
           <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-4 border-b">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-2xl flex items-center gap-3">
@@ -370,15 +387,10 @@ export function LoanRequestReview() {
                 </div>
                 <span>Review Loan Request</span>
               </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsReviewDialogOpen(false)}
-                className="h-8 w-8 p-0"
-              >
-                <X className="w-4 h-4" />
-              </Button>
             </div>
+            <DialogDescription className="sr-only">
+              Review and validate loan request documents, provide feedback, and approve or reject the request
+            </DialogDescription>
           </DialogHeader>
 
           {selectedRequest && (
@@ -411,6 +423,63 @@ export function LoanRequestReview() {
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Overall Reviews - Show all reviews from supervisors and funders */}
+                {selectedRequest.reviews.length > 0 && (
+                  <Card className="border-2 bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
+                    <CardContent className="pt-5">
+                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5" />
+                        Review History
+                      </h3>
+                      <div className="space-y-3">
+                        {selectedRequest.reviews.map((review) => (
+                          <div
+                            key={review.id}
+                            className={`p-4 rounded-lg border-2 ${
+                              review.action === 'approved'
+                                ? 'bg-green-50 border-green-200'
+                                : 'bg-red-50 border-red-200'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {review.action === 'approved' ? (
+                                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                ) : (
+                                  <XCircle className="w-5 h-5 text-red-600" />
+                                )}
+                                <div>
+                                  <div className="font-bold text-sm">{review.reviewerName}</div>
+                                  <Badge variant="outline" className="text-xs mt-1 bg-white">
+                                    {review.reviewerRole === 'supervisor' ? '🛡️ Supervisor' : '💰 Funder'}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <Badge
+                                  className={`text-xs ${
+                                    review.action === 'approved'
+                                      ? 'bg-green-600 text-white'
+                                      : 'bg-red-600 text-white'
+                                  }`}
+                                >
+                                  {review.action === 'approved' ? 'APPROVED' : 'REJECTED'}
+                                </Badge>
+                                <div className="text-xs text-slate-500 mt-1">
+                                  {new Date(review.createdAt).toLocaleDateString()}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="mt-2 p-3 bg-white/70 rounded text-sm text-slate-700">
+                              <span className="font-semibold">Comment:</span> {review.comment}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Review Progress */}
                 <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
