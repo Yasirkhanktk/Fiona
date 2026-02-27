@@ -78,7 +78,7 @@ export function LoanRequestManagement() {
   };
 
   const handleNextToDocuments = () => {
-    if (!formData.environmentId || !formData.borrowerName || !formData.amount || !formData.maturityDate || !formData.interestRate || !formData.purpose) {
+    if (!formData.environmentId || !formData.amount || !formData.maturityDate || !formData.interestRate || !formData.purpose) {
       toast.error('Please fill all required fields');
       return;
     }
@@ -308,26 +308,15 @@ export function LoanRequestManagement() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-base">Borrower Name *</Label>
-                      <Input
-                        className="h-12"
-                        placeholder="Company or individual name"
-                        value={formData.borrowerName}
-                        onChange={(e) => setFormData({ ...formData, borrowerName: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-base">Loan Amount ({formData.currency}) *</Label>
-                      <Input
-                        className="h-12"
-                        type="number"
-                        placeholder="0.00"
-                        value={formData.amount}
-                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label className="text-base">Loan Amount ({formData.currency}) *</Label>
+                    <Input
+                      className="h-12"
+                      type="number"
+                      placeholder="0.00"
+                      value={formData.amount}
+                      onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -388,11 +377,7 @@ export function LoanRequestManagement() {
                       {/* Summary Card */}
                       <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
                         <CardContent className="pt-4">
-                          <div className="grid grid-cols-4 gap-4 text-sm">
-                            <div>
-                              <div className="text-slate-600 mb-1">Borrower</div>
-                              <div className="font-semibold">{formData.borrowerName}</div>
-                            </div>
+                          <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
                               <div className="text-slate-600 mb-1">Amount</div>
                               <div className="font-semibold">${parseFloat(formData.amount || '0').toLocaleString()}</div>
