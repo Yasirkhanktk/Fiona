@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { EnvironmentDetails } from './EnvironmentDetails';
 
 export function EnvironmentConfiguration() {
-  const { environments, companies, addEnvironment, updateEnvironment } = useData();
+  const { environments, companies, addEnvironment, updateEnvironment, users } = useData();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -35,9 +35,9 @@ export function EnvironmentConfiguration() {
     }>,
   });
 
-  const funders = companies.filter((c) => c.type === 'funder');
-  const originators = companies.filter((c) => c.type === 'originator');
-  const supervisors = companies.filter((c) => c.type === 'supervisor');
+  const funders = users.filter((u) => u.role === 'funder' && u.status === 'active');
+  const originators = users.filter((u) => u.role === 'originator' && u.status === 'active');
+  const supervisors = users.filter((u) => u.role === 'supervisor' && u.status === 'active');
 
   // If viewing a specific environment, show details
   if (selectedEnvironmentId) {
@@ -107,9 +107,9 @@ export function EnvironmentConfiguration() {
       return;
     }
 
-    const originator = companies.find((c) => c.id === formData.originatorId);
-    const funder = companies.find((c) => c.id === formData.funderId);
-    const supervisor = companies.find((c) => c.id === formData.supervisorId);
+    const originator = users.find((u) => u.id === formData.originatorId);
+    const funder = users.find((u) => u.id === formData.funderId);
+    const supervisor = users.find((u) => u.id === formData.supervisorId);
 
     addEnvironment({
       name: formData.name,
@@ -205,9 +205,9 @@ export function EnvironmentConfiguration() {
                       <SelectValue placeholder="Select originator" />
                     </SelectTrigger>
                     <SelectContent>
-                      {originators.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name}
+                      {originators.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -224,9 +224,9 @@ export function EnvironmentConfiguration() {
                       <SelectValue placeholder="Select funder" />
                     </SelectTrigger>
                     <SelectContent>
-                      {funders.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name}
+                      {funders.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -243,9 +243,9 @@ export function EnvironmentConfiguration() {
                       <SelectValue placeholder="Select supervisor" />
                     </SelectTrigger>
                     <SelectContent>
-                      {supervisors.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name}
+                      {supervisors.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

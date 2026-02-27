@@ -9,19 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '../ui/dialog';
 import { Plus, UserCircle, Building2, Mail, Shield, ToggleLeft, ToggleRight, Users as UsersIcon, Wallet, ShieldCheck } from 'lucide-react';
-import { Checkbox } from '../ui/checkbox';
 import { toast } from 'sonner';
 import { motion } from 'motion/react';
-
-const availablePermissions = [
-  'create_disbursement',
-  'view_portfolio',
-  'validate_disbursement',
-  'approve_disbursement',
-  'manage_wallet',
-  'view_reports',
-  'manage_overdue',
-];
 
 export function UserManagement() {
   const { users, companies, addUser, updateUser } = useData();
@@ -30,27 +19,28 @@ export function UserManagement() {
     name: '',
     email: '',
     role: '' as 'admin' | 'originator' | 'supervisor' | 'funder' | '',
-    companyId: '',
+    companyName: '',
     status: 'active' as 'active' | 'inactive',
-    permissions: [] as string[],
   });
 
   const handleSubmit = () => {
-    if (!formData.name || !formData.email || !formData.role || !formData.companyId) {
+    if (!formData.name || !formData.email || !formData.role || !formData.companyName) {
       toast.error('Please fill all required fields');
       return;
     }
 
-    const company = companies.find((c) => c.id === formData.companyId);
+    // Find existing company or create a placeholder ID
+    let company = companies.find((c) => c.name.toLowerCase() === formData.companyName.toLowerCase());
+    const companyId = company?.id || `company-${Date.now()}`;
 
     addUser({
       name: formData.name,
       email: formData.email,
       role: formData.role as 'admin' | 'originator' | 'supervisor' | 'funder',
-      companyId: formData.companyId,
-      companyName: company?.name || '',
+      companyId: companyId,
+      companyName: formData.companyName,
       status: formData.status,
-      permissions: formData.permissions,
+      permissions: [],
     });
 
     toast.success('User created successfully');
@@ -59,9 +49,8 @@ export function UserManagement() {
       name: '',
       email: '',
       role: '',
-      companyId: '',
+      companyName: '',
       status: 'active',
-      permissions: [],
     });
   };
 
@@ -84,15 +73,6 @@ export function UserManagement() {
       default:
         return '';
     }
-  };
-
-  const togglePermission = (permission: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      permissions: prev.permissions.includes(permission)
-        ? prev.permissions.filter((p) => p !== permission)
-        : [...prev.permissions, permission],
-    }));
   };
 
   const getRoleIcon = (role: string) => {
@@ -137,7 +117,7 @@ export function UserManagement() {
                 Create New User
               </DialogTitle>
               <DialogDescription className="text-sm text-slate-500">
-                Add a new user to the platform with specific roles and permissions.
+                Add a new user to the platform with their company information.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
@@ -170,9 +150,7 @@ export function UserManagement() {
                   <Label htmlFor="userRole" className="text-xs font-semibold">Role *</Label>
                   <Select
                     value={formData.role}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, role: value as typeof formData.role })
-                    }
+                    onValueChange={(value) => setFormData({ ...formData, role: value as typeof formData.role })}
                   >
                     <SelectTrigger className="border-2">
                       <SelectValue placeholder="Select role" />
@@ -186,43 +164,14 @@ export function UserManagement() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="userCompany" className="text-xs font-semibold">Assign to Company *</Label>
-                  <Select
-                    value={formData.companyId}
-                    onValueChange={(value) => setFormData({ ...formData, companyId: value })}
-                  >
-                    <SelectTrigger className="border-2">
-                      <SelectValue placeholder="Select company" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {companies.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name} ({company.type})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-semibold">Permissions</Label>
-                <div className="grid grid-cols-2 gap-3 p-4 border-2 border-slate-200 rounded-lg bg-slate-50">
-                  {availablePermissions.map((permission) => (
-                    <div key={permission} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={permission}
-                        checked={formData.permissions.includes(permission)}
-                        onCheckedChange={() => togglePermission(permission)}
-                      />
-                      <label
-                        htmlFor={permission}
-                        className="text-xs font-medium leading-none cursor-pointer capitalize"
-                      >
-                        {permission.replace(/_/g, ' ')}
-                      </label>
-                    </div>
-                  ))}
+                  <Label htmlFor="companyName" className="text-xs font-semibold">Company Name *</Label>
+                  <Input
+                    id="companyName"
+                    placeholder="Enter company name"
+                    value={formData.companyName}
+                    onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                    className="border-2"
+                  />
                 </div>
               </div>
 
@@ -266,7 +215,7 @@ export function UserManagement() {
                   <div className="text-3xl font-bold text-slate-800 mb-1">{users.length}</div>
                   <div className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Total Users</div>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
                   <UsersIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -321,10 +270,10 @@ export function UserManagement() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50 hover:bg-slate-50">
-                  <TableHead className="font-semibold text-slate-700">User</TableHead>
+                  <TableHead className="font-semibold text-slate-700">User Name</TableHead>
+                  <TableHead className="font-semibold text-slate-700">Email</TableHead>
                   <TableHead className="font-semibold text-slate-700">Role</TableHead>
                   <TableHead className="font-semibold text-slate-700">Company</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Permissions</TableHead>
                   <TableHead className="font-semibold text-slate-700">Status</TableHead>
                   <TableHead className="font-semibold text-slate-700">Actions</TableHead>
                 </TableRow>
@@ -332,60 +281,45 @@ export function UserManagement() {
               <TableBody>
                 {users.map((user) => {
                   const Icon = getRoleIcon(user.role);
-                  const roleColors = {
-                    admin: 'from-purple-500 to-indigo-600',
-                    funder: 'from-amber-500 to-orange-600',
-                    originator: 'from-blue-500 to-cyan-600',
-                    supervisor: 'from-green-500 to-emerald-600',
-                  };
                   return (
                     <TableRow key={user.id} className="hover:bg-slate-50/50 transition-colors">
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 bg-gradient-to-br ${roleColors[user.role as keyof typeof roleColors]} rounded-lg flex items-center justify-center text-white font-bold shadow-md`}>
-                            {user.name.charAt(0).toUpperCase()}
+                          <div className={`w-10 h-10 bg-gradient-to-br ${
+                            user.role === 'admin' ? 'from-purple-500 to-indigo-600' :
+                            user.role === 'funder' ? 'from-amber-500 to-orange-600' :
+                            user.role === 'originator' ? 'from-blue-500 to-cyan-600' :
+                            'from-green-500 to-emerald-600'
+                          } rounded-lg flex items-center justify-center shadow-md`}>
+                            <Icon className="w-5 h-5 text-white" />
                           </div>
-                          <div>
-                            <div className="font-semibold text-slate-800">{user.name}</div>
-                            <div className="text-xs text-slate-500 flex items-center gap-1">
-                              <Mail className="w-3 h-3" />
-                              {user.email}
-                            </div>
-                          </div>
+                          <span className="font-medium text-slate-800">{user.name}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className={`${getRoleColor(user.role)} font-semibold`}>
-                          <Icon className="w-3 h-3 mr-1" />
+                        <div className="flex items-center gap-2 text-slate-600">
+                          <Mail className="w-4 h-4 text-slate-400" />
+                          {user.email}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={`${getRoleColor(user.role)} border capitalize`}>
                           {user.role}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2 text-slate-600">
-                          <Building2 className="w-4 h-4" />
-                          <span className="text-sm">{user.companyName}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {user.permissions.slice(0, 2).map((permission) => (
-                            <Badge key={permission} variant="secondary" className="text-[10px]">
-                              {permission.split('_')[0]}
-                            </Badge>
-                          ))}
-                          {user.permissions.length > 2 && (
-                            <Badge variant="secondary" className="text-[10px]">
-                              +{user.permissions.length - 2}
-                            </Badge>
-                          )}
+                          <Building2 className="w-4 h-4 text-slate-400" />
+                          {user.companyName}
                         </div>
                       </TableCell>
                       <TableCell>
                         <Badge
+                          variant={user.status === 'active' ? 'default' : 'secondary'}
                           className={
                             user.status === 'active'
-                              ? 'bg-green-600 text-white border-0 shadow-md'
-                              : 'bg-slate-400 text-white border-0'
+                              ? 'bg-green-100 text-green-700 border-green-300 border'
+                              : 'bg-red-100 text-red-700 border-red-300 border'
                           }
                         >
                           {user.status}
@@ -396,20 +330,12 @@ export function UserManagement() {
                           variant="ghost"
                           size="sm"
                           onClick={() => toggleUserStatus(user.id, user.status)}
-                          className={`gap-2 hover:bg-slate-100 ${
-                            user.status === 'active' ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'
-                          }`}
+                          className="hover:bg-slate-100"
                         >
                           {user.status === 'active' ? (
-                            <>
-                              <ToggleRight className="w-4 h-4" />
-                              Deactivate
-                            </>
+                            <ToggleRight className="w-5 h-5 text-green-600" />
                           ) : (
-                            <>
-                              <ToggleLeft className="w-4 h-4" />
-                              Activate
-                            </>
+                            <ToggleLeft className="w-5 h-5 text-slate-400" />
                           )}
                         </Button>
                       </TableCell>
